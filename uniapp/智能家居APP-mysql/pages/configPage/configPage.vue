@@ -62,31 +62,49 @@
 	import {
 		stringify
 	} from 'querystring';
+	const user = require('@/common/common.js')
 	export default {
 		data() {
 			return {
-				temp_th: 99,
-				humi_th: 99,
-				lsens_th: 99,
-				ppm_th: 99,
+				temp_th: '',
+				humi_th: '',
+				lsens_th: '',
+				ppm_th: '',
 			}
 		},
-		onLoad(){
+		onLoad() {
 			uni.request({
-				url: "http://localhost:3000/user_thresholds",
-				method: 'get',
+				url: "http://localhost:3000/get_thresholds",
+				method: 'GET',
+				data: {
+					username: user.getUser('username') // 替换为实际的用户名
+				},
 				success: res => {
-					console.log('user_thresholds');
-					console.log(res.data);
-					this.temp_th = res.data[0].temp_th;
-					this.humi_th = res.data[0].humi_th;
-					this.lsens_th = res.data[0].lsens_th;
-					this.ppm_th = res.data[0].ppm_th;
-					console.log(this.temp_th);
-					console.log(this.humi_th);
-					console.log(this.lsens_th);
-					console.log(this.ppm_th);
+					if (res.statusCode === 200) {
+						// 假设后端返回的是阈值对象
+						console.log(res)
+						user.setUser('temp_th', res.data.temp_th);
+						user.setUser('humi_th', res.data.humi_th);
+						user.setUser('lsens_th', res.data.lsens_th);
+						user.setUser('ppm_th', res.data.ppm_th);
+						this.temp_th = user.getUser('temp_th');
+						this.humi_th = user.getUser('humi_th');
+						this.lsens_th = user.getUser('lsens_th');
+						this.ppm_th = user.getUser('ppm_th');
+						user.getAll();
+					} else {
+						console.error('Failed to get thresholds:', res.data.error);
+					}
+				},
+				fail: (err) => {
+					console.error('Request failed:', err);
 				}
+			});
+
+		},
+		onNavigationBarButtonTap: function(e) {
+			uni.reLaunch({
+				url: '/pages/login/login'
 			})
 		},
 		methods: {
@@ -121,6 +139,31 @@
 					};
 				}
 				console.log('value 发生变化：>>>>>' + stringify(this.key_th) + '<<<<<<<')
+				//修改数据库
+				uni.request({
+					url: "http://localhost:3000/update_thresholds",
+					method: 'PUT',
+					data: {
+						username: user.getUser('username'), // 替换为实际的用户名
+						temp_th: this.temp_th,
+						humi_th: this.humi_th,
+						lsens_th: this.lsens_th,
+						ppm_th: this.ppm_th
+					},
+					success: res => {
+						if (res.statusCode === 200) {
+							// 假设后端返回的是阈值对象
+							console.log('数据库阈值修改成功返回')
+							console.log(res);
+							//console.log(this.ppm_th)
+						} else {
+							console.error('Failed to update thresholds:', res.data.error);
+						}
+					},
+					fail: (err) => {
+						console.error('Request failed:', err);
+					}
+				});
 				// 向后端发送设备属性更新请求
 				uni.request({
 					url: 'https://iot-api.heclouds.com/thingmodel/set-device-property', // 仅为示例，并非真实接口地址。
@@ -135,10 +178,10 @@
 					},
 					// 请求成功，打印提示信息，主要用于调试，可自定义
 					success: () => {
-						console.log('阈值调整成功:' + this.key_th);
+						console.log('设备阈值调整成功:' + this.key_th);
 					},
 					fail: () => {
-						console.log('阈值调整失败');
+						console.log('设备阈值调整失败');
 					}
 				});
 			}

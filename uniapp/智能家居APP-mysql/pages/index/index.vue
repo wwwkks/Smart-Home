@@ -1,4 +1,5 @@
 <template>
+
 	<view class="wrap">
 		<view class="dev-area">
 
@@ -49,7 +50,7 @@
 				</view>
 				<switch :checked="beep" @change="onBeepSwitch" color="#13227a" />
 			</view>
-			
+
 			<view class="dev-cart-long">
 				<view class="dev-name">亮度</view>
 				<button class="mini-btn" type="default" @click="handleClick('button1')">暗</button>
@@ -57,7 +58,7 @@
 				<button class="mini-btn" type="default" @click="handleClick('button3')">较亮</button>
 				<button class="mini-btn" type="default" @click="handleClick('button4')">亮</button>
 			</view>
-							
+
 
 		</view>
 	</view>
@@ -77,9 +78,9 @@
 				ppm: '',
 				led: false,
 				beep: false,
-				bright:'',
-				username:'',
-				password:''
+				bright: '',
+				// username:'',
+				// password:''
 			}
 		},
 		onLoad() {
@@ -89,26 +90,16 @@
 				user_id: '412104',
 			}
 			this.token = createCommonToken(params);
-			uni.request({
-				url: "http://localhost:3000/users",
-				method: 'get',
-				success: res => {
-					console.log('users');
-					console.log(res.data);
-					this.username = res.data[0].username;
-					this.password = res.data[0].password;
-					console.log(this.username);
-					console.log(this.password);
-				}
-			})
-
-
 		},
 		onShow() {
-			//this.fetchDevData();
 			setInterval(() => { //定时获取
 				this.fetchDevData();
 			}, 3000)
+		},
+		onNavigationBarButtonTap: function(e) {
+			uni.reLaunch({
+				url: '/pages/login/login'
+			})
 		},
 		methods: {
 			fetchDevData() {
@@ -179,23 +170,25 @@
 			},
 			handleClick(id) {
 				console.log(id)
-				if (id == 'button1'){
+				if (id == 'button1') {
 					this.bright = 1
-				}else if(id == 'button2'){
+				} else if (id == 'button2') {
 					this.bright = 2
-				}else if(id == 'button3'){
+				} else if (id == 'button3') {
 					this.bright = 3
-				}else if(id == 'button4'){
-					this.bright =4
+				} else if (id == 'button4') {
+					this.bright = 4
 				}
-				
+
 				uni.request({
 					url: 'https://iot-api.heclouds.com/thingmodel/set-device-property', // 仅为示例，并非真实接口地址。
 					method: 'POST',
 					data: {
 						product_id: '6j085UsKhq',
 						device_name: 'd1',
-						params: {'bright':this.bright}
+						params: {
+							'bright': this.bright
+						}
 					},
 					header: {
 						'authorization': this.token // 自定义请求头信息
@@ -208,7 +201,6 @@
 						console.log('亮度调整失败');
 					}
 				});
-				
 			}
 
 		}
@@ -236,7 +228,7 @@
 		align-items: center;
 		box-shadow: 0 0 15rpx #ccc; //边框
 	}
-	
+
 	.dev-cart-long {
 		height: 150rpx;
 		width: 690rpx;
