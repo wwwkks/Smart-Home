@@ -42,4 +42,7 @@
 .\output\main.o: .\hardware\inc\lsens.h
 .\output\main.o: .\hardware\inc\smoke.h
 .\output\main.o: .\hardware\inc\pwm.h
+.\output\main.o: .\hardware\inc\fan_pwm.h
+.\output\main.o: .\hardware\inc\gradien.h
+.\output\main.o: .\hardware\inc\ws2812.h
 .\output\main.o: D:\0MySoftware\keil-arm\keil_v5\ARM\ARMCC\Bin\..\include\string.h

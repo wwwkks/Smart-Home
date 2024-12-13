@@ -499,6 +499,21 @@
               <FileType>1</FileType>
               <FilePath>.\hardware\src\pwm.c</FilePath>
             </File>
+            <File>
+              <FileName>fan_pwm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hardware\src\fan_pwm.c</FilePath>
+            </File>
+            <File>
+              <FileName>gradien.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hardware\src\gradien.c</FilePath>
+            </File>
+            <File>
+              <FileName>ws2812.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hardware\src\ws2812.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

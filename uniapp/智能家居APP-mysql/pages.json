@@ -31,6 +31,24 @@
 			}
 		},
 		{
+			"path": "pages/control/control",
+			"style": {
+				"navigationBarTitleText": "智能家居控制台",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"text": "退出",
+							"type": "none",
+							"color": "#007AFF",
+							"background": "#000000",
+							"fontSize": "16px",
+							"float": "left"
+						}]
+					}
+				}
+			}
+		},
+		{
 			"path": "pages/configPage/configPage",
 			"style": {
 				"navigationBarTitleText": "阈值调整",
@@ -66,6 +84,12 @@
 				"pagePath": "pages/index/index",
 				"iconPath": "../../static/home2.png",
 				"selectedIconPath": "../../static/home.png"
+			},
+			{
+				"text": "控制台",
+				"pagePath": "pages/control/control",
+				"iconPath": "../../static/config2.png",
+				"selectedIconPath": "../../static/config1.png"
 			},
 			{
 				"text": "阈值控制",

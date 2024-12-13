@@ -59,7 +59,7 @@ char key[48];
 
 extern unsigned char esp8266_buf[512];
 
-extern u8 temp,humi,humi_th,temp_th,lsens,ppm,lsens_th,ppm_th,bright;
+extern u8 temp,humi,humi_th,temp_th,lsens,ppm,lsens_th,ppm_th,bright,sound,speed,gramode;
 //extern float 
 
 
@@ -554,7 +554,7 @@ void OneNet_RevPro(unsigned char *cmd)
 	cJSON * raw_json ;
 	cJSON * params_json;
 	cJSON * led_json,* beep_json;
-	cJSON *humi_th_json, *temp_th_json,*lsens_th_json,*ppm_th_json,*bright_json;
+	cJSON *humi_th_json, *temp_th_json,*lsens_th_json,*ppm_th_json,*bright_json,*speed_json,*gramode_json,*sound_json;
 	
 	type = MQTT_UnPacketRecv(cmd);
 	switch(type)
@@ -578,7 +578,11 @@ void OneNet_RevPro(unsigned char *cmd)
 				temp_th_json = cJSON_GetObjectItem(params_json,"temp_th");
 				lsens_th_json = cJSON_GetObjectItem(params_json,"lsens_th");
 				ppm_th_json = cJSON_GetObjectItem(params_json,"ppm_th");
+				
 				bright_json = cJSON_GetObjectItem(params_json,"bright");
+				sound_json = cJSON_GetObjectItem(params_json,"sound");
+				speed_json = cJSON_GetObjectItem(params_json,"speed");
+				gramode_json = cJSON_GetObjectItem(params_json,"gramode");
 				
 				if(led_json != NULL)
 				{
@@ -610,7 +614,7 @@ void OneNet_RevPro(unsigned char *cmd)
 				if(temp_th_json != NULL)
 				{
 					temp_th = temp_th_json->valueint;
-					UsartPrintf(USART_DEBUG, "receive:....temp_=th%d C  humi_th=%d%%RH\r\n",temp_th,humi_th);
+					//UsartPrintf(USART_DEBUG, "receive:....temp_=th%d C  humi_th=%d%%RH\r\n",temp_th,humi_th);
 				}
 				
 				if(lsens_th_json != NULL)
@@ -627,6 +631,21 @@ void OneNet_RevPro(unsigned char *cmd)
 				if(bright_json != NULL)
 				{
 					bright = bright_json->valueint;
+				}
+				
+				if(sound_json != NULL)
+				{
+					sound = sound_json->valueint;
+				}
+				
+				if(speed_json != NULL)
+				{
+					speed = speed_json->valueint;
+				}
+				
+				if(gramode_json != NULL)
+				{
+					gramode = gramode_json->valueint;
 				}
 				
 				 cJSON_Delete(raw_json);

@@ -62,17 +62,33 @@
 	import {
 		stringify
 	} from 'querystring';
+	const {
+		createCommonToken
+	} = require('@/key.js') //导入函数
 	const user = require('@/common/common.js')
 	export default {
 		data() {
 			return {
-				temp_th: '',
-				humi_th: '',
-				lsens_th: '',
-				ppm_th: '',
+				token: '',
+				temp_th: 100,
+				humi_th: 100,
+				lsens_th: 100,
+				ppm_th: 100,
 			}
 		},
+		onShow() {
+			setInterval(() => { //定时发送
+				this.postThresholds();
+			}, 5000)
+		},
 		onLoad() {
+			const params = {
+				author_key: 'rQ9SmPK1mdPtwhRto/+8RNqy57QHHxqjd0GjEzLSkkiE4m2tBg3M43LRK+kvs7sW',
+				version: '2022-05-01',
+				user_id: '412104',
+			}
+			this.token = createCommonToken(params);
+			
 			uni.request({
 				url: "http://localhost:3000/get_thresholds",
 				method: 'GET',
@@ -101,6 +117,7 @@
 				}
 			});
 
+			this.postThresholds();
 		},
 		onNavigationBarButtonTap: function(e) {
 			uni.reLaunch({
@@ -108,6 +125,34 @@
 			})
 		},
 		methods: {
+			postThresholds() {
+				//发送到设备
+				uni.request({
+					url: 'https://iot-api.heclouds.com/thingmodel/set-device-property',
+					method: 'POST',
+					data: {
+						product_id: '6j085UsKhq',
+						device_name: 'd1',
+						params: {
+							"temp_th": this.temp_th,
+							"humi_th": this.humi_th,
+							"lsens_th": this.lsens_th,
+							"ppm_th": this.ppm_th
+						}
+					},
+					header: {
+						'authorization': this.token // 自定义请求头信息
+					},
+					// 请求成功，打印提示信息，主要用于调试，可自定义
+					success: (data) => {
+						console.log('设备端阈值调整成功:');
+						console.log(data)
+					},
+					fail: () => {
+						console.log('设备端阈值调整失败');
+					}
+				});
+			},
 			// 滑动条变化事件的方法
 			sliderChange(e, id) {
 				console.log(id)
@@ -164,26 +209,7 @@
 						console.error('Request failed:', err);
 					}
 				});
-				// 向后端发送设备属性更新请求
-				uni.request({
-					url: 'https://iot-api.heclouds.com/thingmodel/set-device-property', // 仅为示例，并非真实接口地址。
-					method: 'POST',
-					data: {
-						product_id: '6j085UsKhq',
-						device_name: 'd1',
-						params: this.key_th
-					},
-					header: {
-						'authorization': this.token // 自定义请求头信息
-					},
-					// 请求成功，打印提示信息，主要用于调试，可自定义
-					success: () => {
-						console.log('设备阈值调整成功:' + this.key_th);
-					},
-					fail: () => {
-						console.log('设备阈值调整失败');
-					}
-				});
+				this.postThresholds();
 			}
 		}
 	}

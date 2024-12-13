@@ -35,31 +35,6 @@
 				<view class="dev-data">{{ppm}} ppm</view>
 			</view>
 
-			<view class="dev-cart">
-				<view class="">
-					<view class="dev-name">台灯</view>
-					<image class="dev-logo" src="../../static/led.png" mode=""></image>
-				</view>
-				<switch :checked="led" @change="onLedSwitch" color="#13227a" />
-			</view>
-
-			<view class="dev-cart">
-				<view class="">
-					<view class="dev-name">报警器</view>
-					<image class="dev-logo" src="../../static/beep.png" mode=""></image>
-				</view>
-				<switch :checked="beep" @change="onBeepSwitch" color="#13227a" />
-			</view>
-
-			<view class="dev-cart-long">
-				<view class="dev-name">亮度</view>
-				<button class="mini-btn" type="default" @click="handleClick('button1')">暗</button>
-				<button class="mini-btn" type="default" @click="handleClick('button2')">较暗</button>
-				<button class="mini-btn" type="default" @click="handleClick('button3')">较亮</button>
-				<button class="mini-btn" type="default" @click="handleClick('button4')">亮</button>
-			</view>
-
-
 		</view>
 	</view>
 </template>
@@ -114,7 +89,7 @@
 						'authorization': this.token //自定义请求头信息
 					},
 					success: (res) => {
-						console.log('fetch:');
+						console.log('获取设备数据');
 						console.log(res.data);
 						this.beep = res.data.data[0].value === 'true';
 						this.humi = res.data.data[2].value;
@@ -124,85 +99,7 @@
 						this.ppm = res.data.data[7].value;
 					}
 				});
-			},
-			onLedSwitch(event) {
-				let value = event.detail.value; //获取设备端
-				uni.request({
-					url: 'https://iot-api.heclouds.com/thingmodel/set-device-property', //仅为示例，并非真实接口地址。
-					method: 'POST',
-					data: {
-						product_id: '6j085UsKhq',
-						device_name: 'd1',
-						params: {
-							"led": value
-						}
-					},
-					header: {
-						'authorization': this.token //自定义请求头信息
-					},
-					success: () => {
-						console.log('LED ' + (value ? 'ON' : 'OFF'));
-					},
-					fail: () => {
-						console.log('LED fail')
-					}
-				});
-			},
-			onBeepSwitch(event) {
-				let value = event.detail.value; //获取设备端
-				uni.request({
-					url: 'https://iot-api.heclouds.com/thingmodel/set-device-property', //仅为示例，并非真实接口地址。
-					method: 'POST',
-					data: {
-						product_id: '6j085UsKhq',
-						device_name: 'd1',
-						params: {
-							"beep": value
-						}
-					},
-					header: {
-						'authorization': this.token //自定义请求头信息
-					},
-					success: () => {
-						console.log('BEEP ' + (value ? 'ON' : 'OFF'));
-					}
-				});
-			},
-			handleClick(id) {
-				console.log(id)
-				if (id == 'button1') {
-					this.bright = 1
-				} else if (id == 'button2') {
-					this.bright = 2
-				} else if (id == 'button3') {
-					this.bright = 3
-				} else if (id == 'button4') {
-					this.bright = 4
-				}
-
-				uni.request({
-					url: 'https://iot-api.heclouds.com/thingmodel/set-device-property', // 仅为示例，并非真实接口地址。
-					method: 'POST',
-					data: {
-						product_id: '6j085UsKhq',
-						device_name: 'd1',
-						params: {
-							'bright': this.bright
-						}
-					},
-					header: {
-						'authorization': this.token // 自定义请求头信息
-					},
-					// 请求成功，打印提示信息，主要用于调试，可自定义
-					success: () => {
-						console.log('亮度调整成功:' + this.bright);
-					},
-					fail: () => {
-						console.log('亮度调整失败');
-					}
-				});
 			}
-
 		}
 	}
 </script>

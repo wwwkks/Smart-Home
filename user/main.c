@@ -38,6 +38,9 @@
 #include "lsens.h"
 #include "smoke.h"
 #include "pwm.h"
+#include "fan_pwm.h"
+#include "gradien.h"
+#include "ws2812.h"
 
 //C库
 #include <string.h>
@@ -47,7 +50,8 @@
 
 u8 temp,humi,humi_th=100,temp_th=100,lsens=0,ppm=0,lsens_th=99,ppm_th=99; 	
 _Bool ledshine;//led1闪烁flag
-u8 bright,sound;//led亮度   0 1 2 3 4
+u8 bright = 0,sound =0, speed = 0,gramode =0;//led亮度   0 1 2 3 4
+
  
 /*
 ************************************************************
@@ -80,20 +84,33 @@ void Hardware_Init(void)
 	
 	Lsens_Init();
 	
-	//Smoke_Init();
+	Smoke_Init();
 	
+	//灯亮度
 	TIM3_CH2_PWM_Init(500,72-1); //频率是2Kh
 	LED_Set(LED_OFF);
+	
+	//风扇转速
+	TIM4_CH1_PWM_Init(500,72-1);
+	TIM_SetCompare1(TIM4,0);// 200-300-400-499
+	
+	//蜂鸣器响度
+//	TIM4_CH3_PWM_Init(500,72-1);
+//	TIM_SetCompare3(TIM4, 0);
+
+  //RGB_LED_Gradient_Start();
 	
 	
 	TFTLCD_Init();			//LCD初始化
 	FRONT_COLOR=BLACK;
+	
 	
 //	while(DHT11_Init())	//检测DS18B20是否纯在
 //	{
 //		//LCD_ShowString(130,50,tftlcd_data.width,tftlcd_data.height,16,"Error   ");
 //		UsartPrintf(USART_DEBUG, "DHT11 Check Error!\r\n");
 //		DelayXms(500);	
+//		
 //	}
 	
 	UsartPrintf(USART_DEBUG, " Hardware init OK\r\n");
@@ -149,7 +166,6 @@ void data_pros()	//数据处理函数
 ************************************************************
 */
 
-
 int main(void)
 {
 	
@@ -188,9 +204,16 @@ int main(void)
 			//DHT11_Read_Data(&temp,&humi);
 			lsens = Lsens_Get_Val();
 			//ppm = Smoke_Get_Val();
-			UsartPrintf(USART_DEBUG, "ledled=: %d ++++++  bright=: %d\r\n",led_info.LED_Status,bright);//1 关闭   0 开启
+			//UsartPrintf(USART_DEBUG, "ledled=: %d ++++++  bright=: %d\r\n",led_info.LED_Status,bright);//1 关闭   0 开启
+			
 			UsartPrintf(USART_DEBUG, "temp=%d C  humi=%d %%RH  Lsens=%d lx  ppm=%d \r\n",temp,humi,lsens,ppm);
 			UsartPrintf(USART_DEBUG, "%d_____%d_______%d_________%d \r\n",temp_th,humi_th,lsens_th,ppm_th); //调试，打印一下阈值
+			
+			UsartPrintf(USART_DEBUG, "bright:%d\r\n",bright); 
+			UsartPrintf(USART_DEBUG, "Sound:%d \r\n",sound); 
+			UsartPrintf(USART_DEBUG, "Speed:%d\r\n",speed); 
+			UsartPrintf(USART_DEBUG, "Mode:%d\r\n",gramode); 
+			UsartPrintf(USART_DEBUG, "++++++++++++++++++++++++++++++++++\r\n"); 
 			
 			
 			UsartPrintf(USART_DEBUG, "OneNet_SendData\r\n");
@@ -228,9 +251,49 @@ int main(void)
 				  break;
 		  }
 		}
-
-
-			
+		
+		if(beep_info.Beep_Status == BEEP_ON)
+		{
+				switch(sound)
+				{
+					case 0:
+						TIM_SetCompare3(TIM4, 0); 
+						break;
+					case 1:
+						TIM_SetCompare3(TIM4, 100); 
+						break;
+					case 2:
+						TIM_SetCompare3(TIM4, 200);  
+						break;
+					case 3:
+						TIM_SetCompare3(TIM4, 300);  
+						break;
+					case 4:
+						TIM_SetCompare3(TIM4, 400);  
+						break;
+				}
+		}
+		
+		switch (speed)
+    {
+        case 0:
+            TIM_SetCompare1(TIM4, 0);
+            break;
+        case 1:
+            TIM_SetCompare1(TIM4, 250);
+            break;
+        case 2:
+            TIM_SetCompare1(TIM4, 380);
+            break;
+        case 3:
+            TIM_SetCompare1(TIM4, 499);
+            break;
+        default:
+            // 处理无效的 speed 值
+            TIM_SetCompare1(TIM4, 0);
+            break;
+    }
+		
 		
 		if(temp>temp_th || humi>humi_th || lsens>lsens_th || ppm > ppm_th)
 		{

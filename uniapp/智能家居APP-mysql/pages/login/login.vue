@@ -47,7 +47,7 @@
 							// 登录成功后的操作，比如保存用户信息，跳转到首页
 							//uni.setStorageSync('userToken', res.data.token); // 假设后端返回了token
 							user.setUser('username', this.loginForm.username);
-							console.log(user.getUser('username'))
+							console.log('登录成功'+user.getUser('username'));
 							uni.reLaunch({
 								url:"/pages/index/index"
 							})

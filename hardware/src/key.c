@@ -3,6 +3,8 @@
 #include "led.h"
 #include "beep.h"
 
+extern u8 gramode;
+
 /*******************************************************************************
 * 函 数 名         : KEY_Init
 * 函数功能		   : 按键初始化
@@ -71,6 +73,9 @@ void EXTI0_IRQHandler(void)
 	{
 		if(led_info.LED_Status==LED_ON)  LED_Set(LED_OFF);
 		else LED_Set(LED_ON);
+		
+		if(gramode==0)  gramode = 1;
+		else gramode = 0;
 	}
 	EXTI_ClearITPendingBit(EXTI_Line0);
 }
@@ -82,6 +87,9 @@ void EXTI2_IRQHandler(void)
 	{
 		if(led2_info.LED_Status==LED_ON)  LED2_Set(LED_OFF);
 		else LED2_Set(LED_ON);
+		
+		if(gramode==0)  gramode = 2;
+		else gramode = 0;
 	}
 	EXTI_ClearITPendingBit(EXTI_Line2);
 }

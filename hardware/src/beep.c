@@ -25,7 +25,8 @@
 #include "beep.h"
 
 
-BEEP_INFO beep_info = {0};
+BEEP_INFO beep_info = {BEEP_OFF};
+extern u8 sound;
 
 
 /*
@@ -77,7 +78,30 @@ void Beep_Init(void)
 void Beep_Set(_Bool status)
 {
 	
-	GPIO_WriteBit(GPIOB, GPIO_Pin_8, status == BEEP_ON ? Bit_SET : Bit_RESET);		//如果status等于BEEP_ON，则返回Bit_SET，否则返回Bit_RESET
+	//GPIO_WriteBit(GPIOB, GPIO_Pin_8, status == BEEP_ON ? Bit_SET : Bit_RESET);		//如果status等于BEEP_ON，则返回Bit_SET，否则返回Bit_RESET
+	
+		if(status == BEEP_OFF)   
+	{
+		TIM_SetCompare3(TIM4, 0);
+	}
+	else
+	{
+		switch(sound)
+		{
+			case 1:
+				TIM_SetCompare3(TIM4, 0); 
+				break;
+			case 2:
+				TIM_SetCompare3(TIM4, 100);  
+				break;
+			case 3:
+				TIM_SetCompare3(TIM4, 200);  
+				break;
+			case 4:
+				TIM_SetCompare3(TIM4, 300);  
+				break;
+		}
+	}
 	
 	beep_info.Beep_Status = status;
 
