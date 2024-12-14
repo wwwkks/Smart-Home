@@ -11,7 +11,7 @@
 </template>
 
 <script>
-
+import store from '@/store/index.js';//需要引入store
 const user = require('@/common/common.js');
 export default {
 	data() {
@@ -41,6 +41,10 @@ export default {
 				success: (res) => {
 					// 检查响应状态码和返回的数据
 					if (res.statusCode === 200) {
+						// 登录成功后保存用户信息到 vuex
+						this.$store.commit('SET_USER_INFO', {
+							username: this.loginForm.username
+						})
 						console.log(res)
 						uni.showToast({
 							title: '登录成功'

@@ -10,7 +10,7 @@
 				</view>
 				<view class="ctrl-slider">
 					<!-- 滑动条调用slider组件，实时更新阈值 -->
-					<slider :value="temp_th" @change="sliderChange($event, 'slider1')" min="0" max="100" step="1"
+					<slider activeColor="#13227a" :value="temp_th" @change="sliderChange($event, 'slider1')" min="0" max="100" step="1"
 						block-size="20" show-value />
 				</view>
 			</view>
@@ -24,7 +24,7 @@
 				</view>
 				<view class="ctrl-slider">
 					<!-- 滑动条调用slider组件，实时更新阈值 -->
-					<slider :value="humi_th" @change="sliderChange($event, 'slider2')" min="0" max="100" step="1"
+					<slider  activeColor="#13227a" :value="humi_th" @change="sliderChange($event, 'slider2')" min="0" max="100" step="1"
 						block-size="20" show-value />
 				</view>
 			</view>
@@ -37,7 +37,7 @@
 				</view>
 				<view class="ctrl-slider">
 					<!-- 滑动条调用slider组件，实时更新阈值 -->
-					<slider :value="lsens_th" @change="sliderChange($event, 'slider3')" min="0" max="100" step="1"
+					<slider activeColor="#13227a" :value="lsens_th" @change="sliderChange($event, 'slider3')" min="0" max="100" step="1"
 						block-size="20" show-value />
 				</view>
 			</view>
@@ -50,7 +50,7 @@
 				</view>
 				<view class="ctrl-slider">
 					<!-- 滑动条调用slider组件，实时更新阈值 -->
-					<slider :value="ppm_th" @change="sliderChange($event, 'slider4')" min="0" max="100" step="1"
+					<slider activeColor="#13227a" :value="ppm_th" @change="sliderChange($event, 'slider4')" min="0" max="100" step="1"
 						block-size="20" show-value />
 				</view>
 			</view>

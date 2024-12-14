@@ -235,18 +235,15 @@ int main(void)
 		  switch(bright)
 		  {
 			  case 0:
-				  TIM_SetCompare2(TIM3,0);  //i值最大可以取499，因为ARR最大值是499.
-				  break;
-			  case 1:
 				  TIM_SetCompare2(TIM3,49);  
 				  break;
-			  case 2:
+			  case 1:
 				  TIM_SetCompare2(TIM3,199);  
 				  break;
-			  case 3:
+			  case 2:
 				  TIM_SetCompare2(TIM3,359);  
 				  break;
-			  case 4:
+			  case 3:
 				  TIM_SetCompare2(TIM3,499);  
 				  break;
 		  }
@@ -257,20 +254,21 @@ int main(void)
 				switch(sound)
 				{
 					case 0:
-						TIM_SetCompare3(TIM4, 0); 
-						break;
-					case 1:
 						TIM_SetCompare3(TIM4, 100); 
 						break;
-					case 2:
+					case 1:
 						TIM_SetCompare3(TIM4, 200);  
 						break;
-					case 3:
+					case 2:
 						TIM_SetCompare3(TIM4, 300);  
 						break;
-					case 4:
+					case 3:
 						TIM_SetCompare3(TIM4, 400);  
 						break;
+					default:
+            // 处理无效的 speed 值
+            TIM_SetCompare3(TIM4, 0);
+            break;
 				}
 		}
 		

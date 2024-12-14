@@ -1,6 +1,5 @@
-// globalUser.js
 let user = {
-  username: '',
+  username: 'root', //默认用户
   //password: '',
   temp_th: '',
   humi_th: '',
