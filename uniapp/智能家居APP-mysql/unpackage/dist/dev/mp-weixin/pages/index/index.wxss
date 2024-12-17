@@ -1,21 +1,65 @@
 
-.wrap{
-	padding: 30rpx;/*内边距设置 */
+.popup-content {
+	padding: 40rpx;
+	background-color: #fff;
+	text-align: center;
+}
+button {
+	margin-top: 20rpx;
+	padding: 5rpx 15rpx;
+	background-color: blue;
+	color: #fff;
+	border: none;
+	border-radius: 5rpx;
+}
+.popup-text {
+	color: #ff4d4f;
+	/* 设置字体颜色为红色 */
+	font-size: 32rpx;
+	/* 设置字体大小 */
+	font-weight: bold;
+	/* 加粗字体 */
+	margin-bottom: 20rpx;
+	/* 与按钮之间的间距 */
+}
+
+
+.wrap {
+	padding: 30rpx;
+	/* 内边距设置 */
 }
 .dev-area {
 	display: flex;
-	justify-content: space-between; /*排列 */
-	flex-wrap: wrap; /*自动换行 */
+	justify-content: space-between;
+	/* 排列 */
+	flex-wrap: wrap;
+	/* 自动换行 */
 }
 .dev-cart {
 	height: 150rpx;
 	width: 320rpx;
-	border-radius: 30rpx; /*弧度 */
+	border-radius: 30rpx;
+	/* 弧度 */
 	margin-top: 30px;
 	display: flex;
-	justify-content: space-around; /*内部内容 */
+	justify-content: space-around;
+	/* 内部内容 */
 	align-items: center;
-	box-shadow: 0 0 15rpx #ccc; /*边框 */
+	box-shadow: 0 0 15rpx #ccc;
+	/* 边框 */
+}
+.dev-cart-long {
+	height: 150rpx;
+	width: 690rpx;
+	border-radius: 30rpx;
+	/* 弧度 */
+	margin-top: 30px;
+	display: flex;
+	justify-content: space-around;
+	/* 内部内容 */
+	align-items: center;
+	box-shadow: 0 0 15rpx #ccc;
+	/* 边框 */
 }
 .dev-name {
 	font-size: 20rpx;
@@ -31,28 +75,51 @@
 	font-size: 50rpx;
 	color: #6d6d6d;
 }
-/* 长设备卡片样式 */
-.device-cart-l {
-	height: 150rpx;
-	/* 设置高度为150像素 */
-	width: 700rpx;
-	/* 设置宽度为700像素 */
-	border-radius: 30rpx;
-	/* 设置边框圆角为30像素 */
-	margin-top: 30rpx;
-	/* 设置上外边距为30像素 */
-	display: flex;
-	/* 使用弹性盒子布局 */
-	justify-content: space-around;
-	/* 在弹性容器中均匀分布子元素，两端对齐 */
-	align-items: center;
-	/* 在弹性容器中垂直居中对齐子元素 */
-	box-shadow: 0 0 15rpx #ccc;
-	/* 设置盒子阴影，颜色为灰色 */
+.weather-card {
+	padding: 30rpx;
+	/* 增加内边距 */
+	border-radius: 15rpx;
+	/* 调整圆角 */
+	box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+	/* 更柔和的阴影 */
+	margin-top: 20rpx;
+	background-color: #f0f8ff;
+	/* 更柔和的背景色 */
+	text-align: center;
+	/* 文字居中 */
 }
-/* 滑动条样式 */
-.ctrl-slider {
-	width: 580rpx;
-	/* 设置宽度为580像素 */
+.weather-info {
+	margin-top: 10rpx;
+	/* 增加顶部间距 */
+}
+.weather-temp {
+	font-size: 50rpx;
+	/* 增加字体大小 */
+	font-weight: bold;
+	color: #333;
+	/* 更深的颜色 */
+}
+.weather-text {
+	font-size: 24rpx;
+	/* 增加字体大小 */
+	color: #666;
+	/* 更柔和的颜色 */
+}
+.weather-humidity,
+.weather-wind {
+	font-size: 18rpx;
+	/* 增加字体大小 */
+	color: #888;
+	/* 更柔和的颜色 */
+	margin: 5rpx 0;
+	/* 增加上下间距 */
+}
+.weather-warning {
+	font-size: 16rpx;
+	/* 增加字体大小 */
+	color: #d9534f;
+	/* 警告信息颜色 */
+	margin-top: 10rpx;
+	/* 增加顶部间距 */
 }
 

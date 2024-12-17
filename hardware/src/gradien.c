@@ -16,6 +16,8 @@ void RGB_LED_Gradient_Start(void)
     RGB_LED_Init();
 	  gramode = 0;
 	  Timer_Config();
+	   RGB_LED_Clear();
+	LED2 = 1;
 }
 
 void RGB_LED_close()
@@ -40,7 +42,7 @@ void Timer_Config(void)
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 
     TIM_TimeBaseStructure.TIM_Prescaler = 7199; 
-    TIM_TimeBaseStructure.TIM_Period = 14999;     // 设置周期为 14999，以实现 1.5 秒的定时
+    TIM_TimeBaseStructure.TIM_Period = 9999;//14999;     // 设置周期为 14999，以实现 1.5 秒的定时
     TIM_TimeBaseStructure.TIM_ClockDivision = 0;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
     TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
@@ -54,11 +56,10 @@ void Timer_Config(void)
     NVIC_Init(&NVIC_InitStructure);
 
     TIM_Cmd(TIM2, ENABLE);
-	
-	gramode = 3;
 }
 
-int last_mode;
+extern u8 last_mode;
+u8 last_option,lst2;
 
 void TIM2_IRQHandler(void)
 {
@@ -70,38 +71,57 @@ void TIM2_IRQHandler(void)
                 if (last_mode!=0) // 只有当灯未关闭时才清除
                 {
                     RGB_LED_Clear();
-									  LED2=1;
                     last_mode = 0; // 设置标志表示灯已关闭
                 }
                 break;
             case 1:
-							  RGB_LED_Gradient_Lines(); 
-								DelayMs(500);
-								RGB_LED_Gradient_Horizontal();
+								if(last_option==0)
+								{
+								    RGB_LED_Gradient_Lines(); 
+									  last_option = 1;
+								}else{
+								  RGB_LED_Gradient_Horizontal();
+									 last_option = 0;
+								}
+					
+								
                 last_mode = 1; // 重置标志
                 break;
             case 2:
-                RGB_LED_Red();
-								DelayMs(400);
-								RGB_LED_Green();
-								DelayMs(400);
-								RGB_LED_Blue();
-								DelayMs(400);
+							 if(lst2==0)
+							 {
+							 		RGB_LED_Blue();
+								  lst2 = 1;
+							 }else if(lst2==1){
+
+                   RGB_LED_Red();
+
+								  lst2 = 2;
+							 }else if(lst2==2){
+								 		RGB_LED_Green();
+							    lst2 = 0;
+							 }
                 last_mode = 2; // 重置标志    
                 break;
             case 3:
-								RGB_LED_Gradient_PerPoint();
-								DelayMs(400);
-								RGB_LED_Gradient_PerPoint2();
+								if(last_option==0)
+								{
+								    RGB_LED_Gradient_PerPoint();
+									  last_option = 1;
+								}else{
+								  RGB_LED_Gradient_PerPoint2();
+									 last_option = 0;
+								}						
                 last_mode = 3; // 重置标志
+						     
                 break;
         }
 
         TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-        UsartPrintf(USART_DEBUG, "gradient_update........ \r\n", gramode);
+        //UsartPrintf(USART_DEBUG, "gradient_update........ \r\n", gramode);
     }
-
-    UsartPrintf(USART_DEBUG, "gradient_mode: %d \r\n", gramode);
+     LED2 = 1;
+    //UsartPrintf(USART_DEBUG, "gradient_mode: %d \r\n", gramode);
 }
 
 

@@ -8,7 +8,7 @@
     "urlCheck": false,
     "es6": false,
     "postcss": false,
-    "minified": true,
+    "minified": false,
     "newFeature": true,
     "bigPackageSizeSupport": true,
     "babelSetting": {
@@ -20,7 +20,7 @@
   "compileType": "miniprogram",
   "libVersion": "3.6.6",
   "appid": "wxaa7235bc3dc0352a",
-  "projectname": "fan的智能家居",
+  "projectname": "fan的智能家居5",
   "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",

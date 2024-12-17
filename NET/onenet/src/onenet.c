@@ -436,7 +436,7 @@ void OneNet_SendData(void)
 	
 	short body_len = 0, i = 0;
 	
-	UsartPrintf(USART_DEBUG, "Tips:	OneNet_SendData-MQTT\r\n");
+	//UsartPrintf(USART_DEBUG, "Tips:	OneNet_SendData-MQTT\r\n");
 	
 	memset(buf, 0, sizeof(buf));
 	
@@ -450,7 +450,7 @@ void OneNet_SendData(void)
 				mqttPacket._data[mqttPacket._len++] = buf[i];
 			
 			ESP8266_SendData(mqttPacket._data, mqttPacket._len);									//上传数据到平台
-			UsartPrintf(USART_DEBUG, "Send %d Bytes\r\n", mqttPacket._len);
+			//UsartPrintf(USART_DEBUG, "Send %d Bytes\r\n", mqttPacket._len);
 			
 			MQTT_DeleteBuffer(&mqttPacket);															//删包
 		}

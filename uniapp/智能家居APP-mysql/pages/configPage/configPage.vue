@@ -59,13 +59,14 @@
 </template>
 
 <script>
+	import {ip} from '@/common.js';
 	import {
 		stringify
 	} from 'querystring';
 	const {
 		createCommonToken
 	} = require('@/key.js') //导入函数
-	const user = require('@/common/common.js')
+	const user = require('@/common.js')
 	export default {
 		data() {
 			return {
@@ -77,9 +78,9 @@
 			}
 		},
 		onShow() {
-			setInterval(() => { //定时发送
-				this.postThresholds();
-			}, 5000)
+			// setInterval(() => { //定时发送
+			// 	this.postThresholds();
+			// }, 10000)
 		},
 		onLoad() {
 			const params = {
@@ -90,7 +91,8 @@
 			this.token = createCommonToken(params);
 			
 			uni.request({
-				url: "http://localhost:3000/get_thresholds",
+				//url: "http://localhost:3000/get_thresholds",
+				url: `http://${ip}/get_thresholds`, 
 				method: 'GET',
 				data: {
 					username: user.getUser('username') // 替换为实际的用户名
@@ -186,7 +188,8 @@
 				console.log('value 发生变化：>>>>>' + stringify(this.key_th) + '<<<<<<<')
 				//修改数据库
 				uni.request({
-					url: "http://localhost:3000/update_thresholds",
+					//url: "http://localhost:3000/update_thresholds",
+					url: `http://${ip}/update_thresholds`, 
 					method: 'PUT',
 					data: {
 						username: user.getUser('username'), // 替换为实际的用户名
@@ -209,6 +212,8 @@
 						console.error('Request failed:', err);
 					}
 				});
+				
+				//发送到设备端
 				this.postThresholds();
 			}
 		}

@@ -76,7 +76,7 @@ u8 Smoke_Get_Val(void)
 	
 	voltage = (3.3 / 4096.0) * temp_val; // 将ADC值转换为电压值
 	
-	UsartPrintf(USART_DEBUG, "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvoltage:%.2f  \r\n",voltage);
+//	UsartPrintf(USART_DEBUG, "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvoltage:%.2f  \r\n",voltage);
 
     // 根据MQ2传感器的特性，将电压值转换为烟雾浓度值（PPM）
     // 基本公式：Rs/R0 = 11.5428*ppm^(-0.6549)；
@@ -85,7 +85,7 @@ u8 Smoke_Get_Val(void)
     RS = (5 - voltage) / voltage * RL; // 计算Rs
     ppm = pow(11.5428 * R0 / RS, 0.6549) ; // 计算PPM
 	
-	UsartPrintf(USART_DEBUG, "ppppppppppppppppppppppppppppppppppppppppppppm:%.2f  \r\n",ppm);
+	//UsartPrintf(USART_DEBUG, "ppppppppppppppppppppppppppppppppppppppppppppm:%.2f  \r\n",ppm);
 
     return ppm; // 返回烟雾浓度值
 }

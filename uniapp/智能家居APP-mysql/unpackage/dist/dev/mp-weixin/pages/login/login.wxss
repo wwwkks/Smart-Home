@@ -1,0 +1,62 @@
+
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+	/* 添加渐变背景 */
+}
+.login-form {
+	display: flex;
+	flex-direction: column;
+	width: 80%;
+	padding: 30px;
+	background-color: #ffffff;
+	border-radius: 8px;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+.login-form input {
+	height: 40px;
+	margin-bottom: 20px;
+	padding: 0 15px;
+	border: 1px solid #dcdfe6;
+	border-radius: 4px;
+	font-size: 14px;
+}
+.login-form input:focus {
+	border-color: #409eff;
+	outline: none;
+	box-shadow: 0 0 5px rgba(64, 158, 255, 0.5);
+	/* 添加聚焦阴影 */
+}
+.login-form button {
+	height: 40px;
+	background-color: #409eff;
+	color: #ffffff;
+	border: none;
+	border-radius: 4px;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+.login-form button:hover {
+	background-color: #66b1ff;
+	/* 悬停时改变背景色 */
+	-webkit-transform: translateY(-2px);
+	        transform: translateY(-2px);
+	/* 悬停时轻微上移 */
+}
+.login-form button:active {
+	background-color: #3a8ee6;
+	-webkit-transform: translateY(0);
+	        transform: translateY(0);
+	/* 点击时恢复位置 */
+}
+.login-title {
+	color: #409eff;
+	font-size: 24px;
+	text-align: center;
+	margin-bottom: 30px;
+}
+

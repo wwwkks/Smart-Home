@@ -86,21 +86,25 @@ void Beep_Set(_Bool status)
 	}
 	else
 	{
-		switch(sound)
-		{
-			case 1:
-				TIM_SetCompare3(TIM4, 0); 
-				break;
-			case 2:
-				TIM_SetCompare3(TIM4, 100);  
-				break;
-			case 3:
-				TIM_SetCompare3(TIM4, 200);  
-				break;
-			case 4:
-				TIM_SetCompare3(TIM4, 300);  
-				break;
-		}
+	      switch(sound)
+				{
+					case 0:
+						TIM_SetCompare3(TIM4, 50); 
+						break;
+					case 1:
+						TIM_SetCompare3(TIM4, 200);  
+						break;
+					case 2:
+						TIM_SetCompare3(TIM4, 300);  
+						break;
+					case 3:
+						TIM_SetCompare3(TIM4, 400);  
+						break;
+					default:
+            // 处理无效的 speed 值
+            TIM_SetCompare3(TIM4, 0);
+            break;
+				}
 	}
 	
 	beep_info.Beep_Status = status;

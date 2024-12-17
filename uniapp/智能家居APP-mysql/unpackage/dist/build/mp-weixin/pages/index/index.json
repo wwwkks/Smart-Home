@@ -1,4 +1,6 @@
 {
-  "navigationBarTitleText": "智能家居控制台",
-  "usingComponents": {}
+  "navigationBarTitleText": "智能家居",
+  "usingComponents": {
+    "u-notice-bar": "/uni_modules/uview-ui/components/u-notice-bar/u-notice-bar"
+  }
 }

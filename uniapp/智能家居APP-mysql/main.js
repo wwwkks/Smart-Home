@@ -1,5 +1,6 @@
 import App from './App'
 import store from './store'
+// const ip = "192.168.109.114:3000";   
 
 // #ifndef VUE3
 import Vue from 'vue'

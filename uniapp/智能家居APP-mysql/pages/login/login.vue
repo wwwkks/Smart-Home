@@ -12,7 +12,8 @@
 
 <script>
 import store from '@/store/index.js';//需要引入store
-const user = require('@/common/common.js');
+import {ip} from '@/common.js';
+const user = require('@/common.js');
 export default {
 	data() {
 		return {
@@ -25,11 +26,13 @@ export default {
 	methods: {
 		handleLogin() {
 			// 这里需要发送请求到后端进行验证
-			console.log('front-handleLogin')
+			console.log('请求登录中...')
+			console.log(ip);
 			console.log(this.loginForm.username)
 			console.log(this.loginForm.password)
 			uni.request({
-				url: 'http://localhost:3000/login', // 注意：这里的url应该是登录接口的URL
+				//url: 'http://172.27.2.244:3000/login', // 注意：这里的url应该是登录接口的URL
+				url: `http://${ip}/login`, // 使用模板字符串
 				method: 'POST', // 修改为POST方法
 				data: {
 					username: this.loginForm.username,

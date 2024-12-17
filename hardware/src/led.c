@@ -15,7 +15,7 @@ void LED_Init(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;//定义结构体变量
 	
-	RCC_APB2PeriphClockCmd(LED1_PORT_RCC|LED2_PORT_RCC,ENABLE);
+	RCC_APB2PeriphClockCmd(LED1_PORT_RCC,ENABLE); //|LED2_PORT_RCC
 	
 	GPIO_InitStructure.GPIO_Pin=LED1_PIN;  //选择你要设置的IO口
 	GPIO_InitStructure.GPIO_Mode=GPIO_Mode_Out_PP;	 //设置推挽输出模式
@@ -23,9 +23,9 @@ void LED_Init(void)
 	GPIO_Init(LED1_PORT,&GPIO_InitStructure); 	   /* 初始化GPIO */
 	LED_Set(LED_OFF);											//初始化完成后，关闭
 	
-	GPIO_InitStructure.GPIO_Pin=LED2_PIN;  //选择你要设置的IO口
-	GPIO_Init(LED2_PORT,&GPIO_InitStructure); 	   /* 初始化GPIO */
-	GPIO_SetBits(LED2_PORT,LED2_PIN);   //将LED端口拉高，熄灭所有LED
+//	GPIO_InitStructure.GPIO_Pin=LED2_PIN;  //选择你要设置的IO口
+//	GPIO_Init(LED2_PORT,&GPIO_InitStructure); 	   /* 初始化GPIO */
+//	GPIO_SetBits(LED2_PORT,LED2_PIN);   //将LED端口拉高，熄灭所有LED
 }
 
 void LED_Set(_Bool status)  //这里不用取反
@@ -41,21 +41,24 @@ void LED_Set(_Bool status)  //这里不用取反
 	{
 		//TIM_SetCompare2(TIM3,499);
 		
-		switch(bright)
-		{
-			case 1:
-				TIM_SetCompare2(TIM3,49);  
-				break;
-			case 2:
-				TIM_SetCompare2(TIM3,199);  
-				break;
-			case 3:
-				TIM_SetCompare2(TIM3,359);  
-				break;
-			case 4:
-				TIM_SetCompare2(TIM3,499);  
-				break;
-		}
+		 switch(bright)
+		  {
+			  case 0:
+				  TIM_SetCompare2(TIM3,49);  
+				  break;
+			  case 1:
+				  TIM_SetCompare2(TIM3,199);  
+				  break;
+			  case 2:
+				  TIM_SetCompare2(TIM3,359);  
+				  break;
+			  case 3:
+				  TIM_SetCompare2(TIM3,499);  
+				default:
+            // 处理无效的 speed 值
+          TIM_SetCompare2(TIM3, 0);
+				  break;
+		  }
 	}
 	
 	led_info.LED_Status = status;

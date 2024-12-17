@@ -5,7 +5,7 @@
 			<u-notice-bar :text="computedText"></u-notice-bar>
 
 			<!-- 测试按钮，用于模拟条件切换 -->
-<!-- 			<view style="margin-top: 20px;">
+			<!-- 			<view style="margin-top: 20px;">
 				<button @click="toggleCondition('condition1')">切换条件1</button>
 				<button @click="toggleCondition('condition2')">切换条件2</button>
 				<button @click="toggleCondition('condition3')">切换条件3</button>
@@ -19,13 +19,13 @@
 		<view class="weather-card">
 			<view>威海</view>
 			<view class="weather-info">
-				<view class="weather-temp">{{ this.weather.temp }} ℃</view>
-				<view class="weather-text">{{ this.weather.text }}</view>
-				<view class="weather-humidity">湿度: {{ this.weather.humi }}%</view>
-				<view class="weather-wind">风速: {{ this.weather.windspeed }} km/h</view>
-				<view class="weather-wind">空气{{ this.air.category }} {{ this.air.aqi }}</view>
-				<view class="weather-wind">{{ this.suggest }}</view>
-				<view class="weather-wind">预警信息: {{ this.warning }}</view>
+				<view class="weather-temp">{{ weather.temp !== undefined ? weather.temp : '加载中...' }} ℃</view>
+				<view class="weather-text">{{ weather.text !== undefined ? weather.text : '加载中...' }}</view>
+				<view class="weather-humidity">湿度: {{ weather.humi !== undefined ? weather.humi : '加载中...' }}%</view>
+				<view class="weather-wind">风速: {{ weather.windspeed !== undefined ? weather.windspeed : '加载中...' }} km/h</view>
+				<view class="weather-wind">空气{{ air.category !== undefined ? air.category : '加载中...' }} {{ air.aqi !== undefined ? air.aqi : '加载中...' }}</view>
+				<view class="weather-wind">{{ suggest !== undefined ? suggest : '加载中...' }}</view>
+				<view class="weather-wind">预警信息: {{warning !== undefined ? warning : '加载中...' }}</view>
 			</view>
 		</view>
 
@@ -68,10 +68,17 @@
 
 <script>
 	import GlobalPopup from '@/components/GlobalPopup.vue'
-	const user = require('@/common/common.js')
+	const user = require('@/common.js')
+	import {
+		ip
+	} from '@/common.js'
 	const {
 		createCommonToken
 	} = require('@/key.js') //导入函数
+	import {
+		parse,
+		stringify
+	} from 'querystring';
 
 
 	export default {
@@ -85,18 +92,19 @@
 				led: false,
 				beep: false,
 				bright: '',
+				weather_temp: 0,
 				weather: {
-					temp: '',
-					humi: '',
-					windspeed: '',
-					text: ''
+					temp: '4',
+					humi: '40',
+					windspeed: '34',
+					text: '多云'
 				},
 				air: {
-					category: '',
-					aqi: ''
+					category: '优',
+					aqi: '24'
 				},
 				warning: '',
-				suggest: '',
+				suggest: null,
 				temp_th: 100,
 				humi_th: 100,
 				lsens_th: 100,
@@ -115,20 +123,21 @@
 			// 根据条件动态生成通知文本
 			computedText() {
 				let result = "";
-				if (this.condition1) {
+				if (this.temp > this.temp_th) {
 					result += this.text1;
 				}
-				if (this.condition2) {
+				if (this.humi > this.humi_th) {
 					result += this.text2;
 				}
-				if (this.condition3) {
+				if (this.lsens > this.lsens_th) {
 					result += this.text3;
 				}
-				if (this.condition4) {
+				if (this.ppm > this.ppm_th) {
 					result += this.text4;
 				}
 				// 默认内容（当没有条件满足时）
-				if (!this.condition1 && !this.condition2 && !this.condition3 && !this.condition4) {
+				if (this.temp <= this.temp_th && this.humi <= this.humi_th && this.lsens <= this.lsens_th && this.ppm <=
+					this.ppm_th) {
 					result = "温度,湿度,光照,烟雾传感器检测正常";
 				}
 				return result;
@@ -146,12 +155,14 @@
 			this.showPopup();
 		},
 		onShow() {
+			this.fetchDevData();
+			this.showPopup();
 			setInterval(() => { //定时获取
 				this.fetchDevData();
-			}, 5000);
+			}, 6000);
 			setInterval(() => {
 				this.showPopup();
-			}, 6000);
+			}, 10000);
 		},
 		onNavigationBarButtonTap: function(e) {
 			uni.reLaunch({
@@ -163,11 +174,13 @@
 			toggleCondition(condition) {
 				this[condition] = !this[condition];
 			},
-			checkThreshold() {
+			fetchThreshold() {
 				console.log("阈值check");
 				console.log(user.getAll())
+				console.log(ip)
 				uni.request({
-					url: "http://localhost:3000/get_thresholds",
+					//url: "http://192.168.198.1:3000/get_thresholds",
+					url: `http://${ip}/get_thresholds`,
 					method: 'GET',
 					data: {
 						username: user.getUser('username') // 替换为实际的用户名
@@ -190,53 +203,33 @@
 						console.error('Request failed:', err);
 					},
 				});
+			},
+
+			showPopup() {
+				this.fetchThreshold();
+
 				if (this.temp > this.temp_th) {
 					console.log("弹窗temp:" + this.temp + "---------------" + this.temp_th)
-					this.toggleCondition('condition1')
-					return "temp_out"
-				} else if (this.condition1 == true) {
-					this.toggleCondition('condition1')
+					//this.toggleCondition('condition1');
+					this.$refs.popup.showPopup();
 				}
 
 				if (this.humi > this.humi_th) {
 					console.log("弹窗humi:" + this.humi + "---------------" + this.humi_th)
-					this.toggleCondition('condition2')
-					return "humi_out"
-				} else if (this.condition2 == true) {
-					this.toggleCondition('condition2')
+					//this.toggleCondition('condition2')
+					this.$refs.popup.showPopup2()
 				}
+
 
 				if (this.lsens > this.lsens_th) {
 					console.log("弹窗lsens:" + this.lsens + "---------------" + this.lsens_th)
-					this.toggleCondition('condition3')
-					return "lsens_out"
-				} else if (this.condition3 == true) {
-					this.toggleCondition('condition3')
+					//this.toggleCondition('condition3')
+					this.$refs.popup.showPopup3();
 				}
 
 				if (this.ppm > this.ppm_th) {
 					console.log("弹窗ppm:" + this.ppm + "---------------" + this.ppm_th)
-					this.toggleCondition('condition4')
-					return "ppm_out"
-				} else if (this.condition4 == true) {
-					this.toggleCondition('condition4')
-				}
-				return 'OK'
-			},
-
-			showPopup() {
-				const st = this.checkThreshold();
-				console.log(st)
-				if (st == "temp_out") {
-					this.$refs.popup.showPopup();
-				}
-				if (st == "humi_out") {
-					this.$refs.popup.showPopup2();
-				}
-				if (st == "lsens_out") {
-					this.$refs.popup.showPopup3();
-				}
-				if (st == "ppm_out") {
+					//this.toggleCondition('condition4')
 					this.$refs.popup.showPopup4();
 				}
 			},
@@ -264,73 +257,104 @@
 				});
 			},
 			getWeather() {
-				uni.request({
-					url: 'https://devapi.qweather.com/v7/weather/now?location=101121301&key=6ff97dc76f834ab2b0dd2e13b35c5775',
-					method: 'GET',
-					success: (res) => {
-						if (res.data.code === "200") {
-							this.weather.temp = res.data.now.temp;
-							this.weather.humi = res.data.now.humidity;
-							this.weather.windspeed = res.data.now.windSpeed;
-							this.weather.text = res.data.now.text;
+				console.log("天气API");
 
-						} else {
-							console.error("Error fetching weather data: ", res.data);
+				const weatherRequest = new Promise((resolve, reject) => {
+					uni.request({
+						url: 'https://devapi.qweather.com/v7/weather/now?location=101121301&key=6ff97dc76f834ab2b0dd2e13b35c5775',
+						method: 'GET',
+						success: (res) => {
+							console.log("天气请求成功")
+							console.log(res)
+							if (res.data.code === "200") {
+								this.weather.temp = res.data.now.temp;
+								// this.weather.humi = res.data.now.humidity;
+								 this.$set(this.weather, 'humi', res.data.now.humidity);
+								this.weather.windspeed = res.data.now.windSpeed;
+								this.weather.text = res.data.now.text;
+								resolve();
+							} else {
+								console.error("Error fetching weather data: ", res.data);
+								reject(res.data);
+							}
+						},
+						fail: (error) => {
+							console.error("Error fetching weather data: ", error);
+							reject(error);
 						}
-					},
-					fail: (error) => {
-						console.error("Error fetching weather data: ", error);
-					}
+					});
 				});
 
-				uni.request({
-					url: 'https://devapi.qweather.com/v7/air/now?location=101121301&key=6ff97dc76f834ab2b0dd2e13b35c5775',
-					method: 'GET',
-					success: (res) => {
-						if (res.data.code === "200") {
-							this.air.category = res.data.now.category;
-							this.air.aqi = res.data.now.aqi;
-						} else {
-							console.error("Error fetching air data: ", res.data);
+				const airRequest = new Promise((resolve, reject) => {
+					uni.request({
+						url: 'https://devapi.qweather.com/v7/air/now?location=101121301&key=6ff97dc76f834ab2b0dd2e13b35c5775',
+						method: 'GET',
+						success: (res) => {
+							if (res.data.code === "200") {
+								this.air.category = res.data.now.category;
+								this.air.aqi = res.data.now.aqi;
+								resolve();
+							} else {
+								console.error("Error fetching air data: ", res.data);
+								reject(res.data);
+							}
+						},
+						fail: (error) => {
+							console.error("Error fetching air data: ", error);
+							reject(error);
 						}
-					},
-					fail: (error) => {
-						console.error("Error fetching air data: ", error);
-					}
+					});
 				});
 
-				uni.request({
-					url: 'https://devapi.qweather.com/v7/warning/now?location=101121301&key=6ff97dc76f834ab2b0dd2e13b35c5775',
-					method: 'GET',
-					success: (res) => {
-						if (res.data.code === "200") {
-							this.warning = res.data.warning[0]; // 存储天气数据
-							if(this.warning == null)  this.warning = '无';
-						} else {
-							console.error("Error fetching warning data: ", res.data);
+				const warningRequest = new Promise((resolve, reject) => {
+					uni.request({
+						url: 'https://devapi.qweather.com/v7/warning/now?location=101121301&key=6ff97dc76f834ab2b0dd2e13b35c5775',
+						method: 'GET',
+						success: (res) => {
+							if (res.data.code === "200") {
+								this.warning = res.data.warning[0] || '无'; // 存储天气数据
+								resolve();
+							} else {
+								console.error("Error fetching warning data: ", res.data);
+								reject(res.data);
+							}
+						},
+						fail: (error) => {
+							console.error("Error fetching warning data: ", error);
+							reject(error);
 						}
-					},
-					fail: (error) => {
-						console.error("Error fetching warning data: ", error);
-					}
+					});
 				});
 
-				uni.request({
-					url: 'https://devapi.qweather.com/v7/indices/1d?type=8&location=101121301&key=6ff97dc76f834ab2b0dd2e13b35c5775',
-					method: 'GET',
-					success: (res) => {
-						if (res.data.code === "200") {
-							this.suggest = res.data.daily[0].text; // 存储天气数据
-						} else {
-							console.error("Error fetching suggest data: ", res.data);
+				const suggestRequest = new Promise((resolve, reject) => {
+					uni.request({
+						url: 'https://devapi.qweather.com/v7/indices/1d?type=8&location=101121301&key=6ff97dc76f834ab2b0dd2e13b35c5775',
+						method: 'GET',
+						success: (res) => {
+							if (res.data.code === "200") {
+								this.suggest = res.data.daily[0].text; // 存储天气数据
+								resolve();
+							} else {
+								console.error("Error fetching suggest data: ", res.data);
+								reject(res.data);
+							}
+						},
+						fail: (error) => {
+							console.error("Error fetching suggest data: ", error);
+							reject(error);
 						}
-					},
-					fail: (error) => {
-						console.error("Error fetching suggest data: ", error);
-					}
+					});
 				});
 
-
+				Promise.all([weatherRequest, airRequest, warningRequest, suggestRequest])
+					.then(() => {
+						console.log(this.weather.temp);
+						console.log(this.air.aqi);
+						console.log(this.suggest);
+					})
+					.catch((error) => {
+						console.error("One or more requests failed: ", error);
+					});
 			}
 
 		}
