@@ -18,20 +18,10 @@
     }
   },
   "compileType": "miniprogram",
-  "libVersion": "3.7.2",
+  "libVersion": "3.7.1",
   "appid": "wxaa7235bc3dc0352a",
-  "projectname": "fan的智能家居5",
-  "condition": {
-    "miniprogram": {
-      "list": [
-        {
-          "name": "pages/index/index",
-          "pathName": "pages/index/index",
-          "query": ""
-        }
-      ]
-    }
-  },
+  "projectname": "fan的智能家居00",
+  "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2

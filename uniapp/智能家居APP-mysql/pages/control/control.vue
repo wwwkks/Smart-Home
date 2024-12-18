@@ -80,12 +80,12 @@
 		onShow() {
 			setInterval(() => {
 				this.fetchData() ;	
-			}, 5000);
+			}, 3000);
 			setInterval(() => {
 
 				this.updateState();
 				
-			}, 10000);
+			}, 15000);
 
 		},
 		onNavigationBarButtonTap: function(e) {

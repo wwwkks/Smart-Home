@@ -314,15 +314,15 @@ var _default = {
   },
   onShow: function onShow() {
     var _this = this;
-    this.fetchDevData();
-    this.showPopup();
+    // this.fetchDevData();
+    // this.showPopup();
     setInterval(function () {
       //定时获取
       _this.fetchDevData();
     }, 6000);
     setInterval(function () {
       _this.showPopup();
-    }, 10000);
+    }, 5000);
   },
   onNavigationBarButtonTap: function onNavigationBarButtonTap(e) {
     uni.reLaunch({

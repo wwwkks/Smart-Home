@@ -246,10 +246,10 @@ var _default = {
     var _this = this;
     setInterval(function () {
       _this.fetchData();
-    }, 5000);
+    }, 3000);
     setInterval(function () {
       _this.updateState();
-    }, 10000);
+    }, 15000);
   },
   onNavigationBarButtonTap: function onNavigationBarButtonTap(e) {
     uni.reLaunch({

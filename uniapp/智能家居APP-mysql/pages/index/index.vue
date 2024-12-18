@@ -155,14 +155,14 @@
 			this.showPopup();
 		},
 		onShow() {
-			this.fetchDevData();
-			this.showPopup();
+			// this.fetchDevData();
+			// this.showPopup();
 			setInterval(() => { //定时获取
 				this.fetchDevData();
 			}, 6000);
 			setInterval(() => {
 				this.showPopup();
-			}, 10000);
+			}, 5000);
 		},
 		onNavigationBarButtonTap: function(e) {
 			uni.reLaunch({

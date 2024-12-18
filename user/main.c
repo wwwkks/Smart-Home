@@ -166,10 +166,12 @@ void data_pros()	//数据处理函数
 ************************************************************
 */
 
+
 int main(void)
 {
 	
 	unsigned short timeCount = 0;	//发送间隔变量
+	int interval = 300; //300*10   12*250
 	
 		u16 i=0;  
 	u8 fx=0;
@@ -199,7 +201,7 @@ int main(void)
 	while(1)
 	{	
 
-		if(++timeCount >= 300)									//发送间隔500 * 10 
+		if(++timeCount >= interval)									//发送间隔500 * 10 
 		{
 			DHT11_Read_Data(&temp,&humi);
 			lsens = Lsens_Get_Val();
@@ -235,24 +237,27 @@ int main(void)
 		}
 		
 		if(thresholds_flag == 1 && beep_info.Beep_Status==BEEP_OFF)
-				{
-					  if(i==0)  i = 800; //延时10s后才开警告
-					  else  i--;
-				}
+		{
+				if(i==0)  i = 40; //延时10s后才开警告   250ms *
+				else  i--;
+		}
 				
 				
 					//检测阈值
-						 if(temp>temp_th || humi>humi_th || lsens>lsens_th || ppm > ppm_th)
-						{
-							thresholds_flag = 1;
-							LED_Set(led_info.LED_Status? LED_ON:LED_OFF);
-							if(i==0)  Beep_Set(BEEP_ON);
-						}else if (thresholds_flag == 1){
-							i = 0;
-							thresholds_flag = 0;
-							LED_Set(LED_OFF);
-							Beep_Set(BEEP_OFF);
-						}
+			if(temp>temp_th || humi>humi_th || lsens>lsens_th || ppm > ppm_th)
+			{
+					thresholds_flag = 1;
+					LED_Set(led_info.LED_Status? LED_ON:LED_OFF);
+				interval  =12;
+					DelayMs(240);
+					if(i==0)  Beep_Set(BEEP_ON);
+			}else if(thresholds_flag == 1){
+					i = 0;
+					thresholds_flag = 0;
+					LED_Set(LED_OFF);
+					Beep_Set(BEEP_OFF);
+				interval  =300;
+			}
 			
 		
 		if(led_info.LED_Status == LED_ON)

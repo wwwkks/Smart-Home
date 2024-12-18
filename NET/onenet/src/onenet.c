@@ -589,12 +589,10 @@ void OneNet_RevPro(unsigned char *cmd)
 					 if(led_json->type == cJSON_True)  
 					 {
 					     LED_Set(LED_ON);
-						   //bright = 4;
 					 }
 				   else
 					 {
 							LED_Set(LED_OFF);
-						 //bright = 0;
 					 }
 				}
 				

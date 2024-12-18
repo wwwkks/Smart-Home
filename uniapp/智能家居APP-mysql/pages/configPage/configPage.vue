@@ -63,6 +63,7 @@
 	import {
 		stringify
 	} from 'querystring';
+	import {fetchData} from '@/pages/control/control.vue'
 	const {
 		createCommonToken
 	} = require('@/key.js') //导入函数
@@ -215,6 +216,7 @@
 				
 				//发送到设备端
 				this.postThresholds();
+				fetchData();
 			}
 		}
 	}
