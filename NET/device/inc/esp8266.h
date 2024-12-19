@@ -2,11 +2,10 @@
 #define _ESP8266_H_
 
 
-
-
-
 #define REV_OK		0	//接收完成标志
 #define REV_WAIT	1	//接收未完成标志
+
+#define ESP8266_WIFI_INFO		"AT+CWJAP=\"fanfanfan\",\"fanfanfan\"\r\n"
 
 
 void ESP8266_Init(void);

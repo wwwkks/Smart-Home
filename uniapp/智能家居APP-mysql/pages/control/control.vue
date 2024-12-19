@@ -75,16 +75,16 @@
 				user_id: '412104',
 			}
 			this.token = createCommonToken(params);
-			this.fetchData() ;
+			this.fetchData();
 		},
 		onShow() {
 			setInterval(() => {
-				this.fetchData() ;	
+				this.fetchData();
 			}, 3000);
 			setInterval(() => {
 
 				this.updateState();
-				
+
 			}, 15000);
 
 		},
@@ -140,8 +140,8 @@
 						console.log(res.data);
 						this.beep = res.data.data[0].value === 'true';
 						this.led = res.data.data[5].value === 'true'; //? true:false
-						console.log('led:'+ this.led);
-						console.log('beep:' +this.beep);
+						console.log('led:' + this.led);
+						console.log('beep:' + this.beep);
 					}
 				});
 			},
@@ -188,7 +188,7 @@
 					}
 				});
 			},
-			
+
 			handleClick(index) {
 				this.curNow1 = index;
 				this.updateState();
@@ -214,94 +214,91 @@
 </script>
 
 <style>
-	
 	.wrap {
-	  padding: 30rpx;
+		padding: 30rpx;
 	}
-	
+
 	.dev-area {
-	  display: flex;
-	  justify-content: space-between;
-	  flex-wrap: wrap;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
 	}
-	
+
 	.dev-cart {
-	  height: 150rpx;
-	  width: 320rpx;
-	  border-radius: 30rpx;
-	  margin-top: 30px;
-	  display: flex;
-	  justify-content: space-around;
-	  align-items: center;
-	  box-shadow: 0 0 15rpx #ccc;
+		height: 150rpx;
+		width: 320rpx;
+		border-radius: 30rpx;
+		margin-top: 30px;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		box-shadow: 0 0 15rpx #ccc;
 	}
-	
+
 	.dev-cart-long {
-	  height: 150rpx;
-	  width: 690rpx;
-	  border-radius: 30rpx;
-	  margin-top: 30px;
-	  display: flex;
-	  justify-content: space-around;
-	  align-items: center;
-	  box-shadow: 0 0 15rpx #ccc;
+		height: 150rpx;
+		width: 690rpx;
+		border-radius: 30rpx;
+		margin-top: 30px;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		box-shadow: 0 0 15rpx #ccc;
 	}
-	
+
 	.button {
-	  width: 150rpx;
-	  height: 60rpx;
-	  line-height: 60rpx;
-	  text-align: center;
-	  background-color: #13227a;
-	  color: #fff;
-	  border-radius: 10rpx;
-	  font-size: 16px;
-	  border: none;
-	  cursor: pointer;
-	  box-shadow: 0 0 15rpx #ccc;
-	  margin: 0 10rpx;
+		width: 150rpx;
+		height: 60rpx;
+		line-height: 60rpx;
+		text-align: center;
+		background-color: #13227a;
+		color: #fff;
+		border-radius: 10rpx;
+		font-size: 16px;
+		border: none;
+		cursor: pointer;
+		box-shadow: 0 0 15rpx #ccc;
+		margin: 0 10rpx;
 	}
-	
+
 	.dev-name {
-	  font-size: 20rpx;
-	  color: #6d6d6d;
-	  text-align: center;
+		font-size: 20rpx;
+		color: #6d6d6d;
+		text-align: center;
 	}
-	
+
 	.dev-name2 {
-	  font-size: 30rpx;
-	  color: #000;
-	  text-align: center;
+		font-size: 30rpx;
+		color: #000;
+		text-align: center;
 	}
-	
+
 	.dev-logo {
-	  height: 70rpx;
-	  width: 70rpx;
-	  margin-top: 10rpx;
+		height: 70rpx;
+		width: 70rpx;
+		margin-top: 10rpx;
 	}
-	
+
 	.control-header {
-	  display: flex;
-	  align-items: center;
-	  margin-bottom: 20rpx;
+		display: flex;
+		align-items: center;
+		margin-bottom: 20rpx;
 	}
-	
+
 	.button-group {
-	  display: flex;
-	  justify-content: space-around;
+		display: flex;
+		justify-content: space-around;
 	}
-	
+
 	.button-group .u-button {
-	  margin: 0 10rpx;
-	  min-width: 120rpx;
+		margin: 0 10rpx;
+		min-width: 120rpx;
 	}
-	
+
 	.subsection {
-	  height: 100rpx;
-	  width: 690rpx;
-	  margin-top: 30px;
-	  flex-wrap: wrap;
+		height: 100rpx;
+		width: 690rpx;
+		margin-top: 30px;
+		flex-wrap: wrap;
 	}
-
-
 </style>

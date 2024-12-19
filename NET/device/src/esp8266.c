@@ -33,7 +33,7 @@
 #include <stdio.h>
 
 
-#define ESP8266_WIFI_INFO		"AT+CWJAP=\"fanfanfan\",\"fanfanfan\"\r\n"
+
 
 
 unsigned char esp8266_buf[512];

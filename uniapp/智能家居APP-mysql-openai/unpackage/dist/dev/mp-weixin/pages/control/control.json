@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "控制台",
+  "usingComponents": {
+    "u-subsection": "/uni_modules/uview-ui/components/u-subsection/u-subsection"
+  }
+}
