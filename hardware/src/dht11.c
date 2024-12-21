@@ -102,7 +102,7 @@ u8 DHT11_Read_Data(u8 *temp,u8 *humi)
 		{
 			buf[i]=DHT11_Read_Byte();
 		}
-		if((buf[0]+buf[1]+buf[2]+buf[3])==buf[4])
+		if((buf[0]+buf[1]+buf[2]+buf[3])==buf[4])//Ð£ÑéºÍ
 		{
 			*humi=buf[0];
 			*temp=buf[2];

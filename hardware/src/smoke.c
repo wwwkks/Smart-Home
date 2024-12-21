@@ -65,7 +65,7 @@ u8 Smoke_Get_Val(void)
 	float R0;
 	float RS;
 	float ppm;
-	float RL = 0.5;//可调电阻值？？？？？？？？
+	float RL = 0.5;//可调电阻值
 	u8 t;
 	for(t=0;t<LSENS_READ_TIMES;t++)
 	{
@@ -76,8 +76,6 @@ u8 Smoke_Get_Val(void)
 	
 	voltage = (3.3 / 4096.0) * temp_val; // 将ADC值转换为电压值
 	
-//	UsartPrintf(USART_DEBUG, "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvoltage:%.2f  \r\n",voltage);
-
     // 根据MQ2传感器的特性，将电压值转换为烟雾浓度值（PPM）
     // 基本公式：Rs/R0 = 11.5428*ppm^(-0.6549)；
     // Vrl：即AO口输出电压，Vc：回路电压（5V），Rl：Rl为可调电阻（500欧姆）????
@@ -85,7 +83,7 @@ u8 Smoke_Get_Val(void)
     RS = (5 - voltage) / voltage * RL; // 计算Rs
     ppm = pow(11.5428 * R0 / RS, 0.6549) ; // 计算PPM
 	
-	//UsartPrintf(USART_DEBUG, "ppppppppppppppppppppppppppppppppppppppppppppm:%.2f  \r\n",ppm);
+
 
     return ppm; // 返回烟雾浓度值
 }

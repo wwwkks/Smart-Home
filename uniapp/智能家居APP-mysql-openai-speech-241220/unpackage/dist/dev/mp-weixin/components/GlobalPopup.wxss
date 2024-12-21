@@ -1,0 +1,25 @@
+
+.popup-content {
+	padding: 40rpx;
+	background-color: #fff;
+	text-align: center;
+}
+button {
+	margin-top: 20rpx;
+	padding: 5rpx 15rpx;
+	background-color: blue;
+	color: #fff;
+	border: none;
+	border-radius: 5rpx;
+}
+.popup-text {
+	color: #ff4d4f;
+	/* 设置字体颜色为红色 */
+	font-size: 32rpx;
+	/* 设置字体大小 */
+	font-weight: bold;
+	/* 加粗字体 */
+	margin-bottom: 20rpx;
+	/* 与按钮之间的间距 */
+}
+

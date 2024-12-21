@@ -367,7 +367,7 @@ var _default = {
     }, 6000);
     setInterval(function () {
       _this.showPopup();
-    }, 5000);
+    }, 6000);
   },
   onNavigationBarButtonTap: function onNavigationBarButtonTap(e) {
     uni.reLaunch({
@@ -514,7 +514,7 @@ var _default = {
           method: 'GET',
           success: function success(res) {
             if (res.data.code === "200") {
-              _this4.warning = res.data.warning[0] || '无'; // 存储天气数据
+              _this4.warning = res.data.warning[0].title || '无'; // 存储天气数据
               resolve();
             } else {
               console.error("Error fetching warning data: ", res.data);
@@ -572,10 +572,11 @@ var _default = {
                   type: 'user',
                   content: _this5.userInput
                 });
+                console.log("AI对话:" + _this5.userInput);
                 userQuery = _this5.userInput;
                 _this5.userInput = '';
-                _context.prev = 5;
-                _context.next = 8;
+                _context.prev = 6;
+                _context.next = 9;
                 return uni.request({
                   url: 'https://open.api.gu28.top/v1/chat/completions',
                   method: 'POST',
@@ -707,13 +708,14 @@ var _default = {
                   },
                   header: {
                     'Authorization': 'Bearer sk-CBbXYAj2A480YQerqALXWgaecu4cCyPSaMrLBATZHH1QJxYM',
+                    'Accept': 'application/json',
                     'Content-Type': 'application/json'
                   }
                 });
-              case 8:
+              case 9:
                 response = _context.sent;
                 if (!(response.statusCode === 200)) {
-                  _context.next = 60;
+                  _context.next = 62;
                   break;
                 }
                 result = response.data.choices[0].message; // 显示AI的回复
@@ -723,59 +725,60 @@ var _default = {
                     content: result.content
                   });
                 }
+                console.log("AI回复:" + result.content);
 
                 // 处理函数调用
                 if (!result.function_call) {
-                  _context.next = 60;
+                  _context.next = 62;
                   break;
                 }
                 functionName = result.function_call.name;
                 args = JSON.parse(result.function_call.arguments);
                 functionResult = '';
                 _context.t0 = functionName;
-                _context.next = _context.t0 === 'controlLED' ? 19 : _context.t0 === 'controlBeep' ? 22 : _context.t0 === 'getSensorData' ? 25 : _context.t0 === 'setThreshold' ? 41 : _context.t0 === 'setBrightness' ? 43 : _context.t0 === 'setBeepVolume' ? 47 : _context.t0 === 'setFanSpeed' ? 51 : _context.t0 === 'setColorMode' ? 55 : 59;
+                _context.next = _context.t0 === 'controlLED' ? 21 : _context.t0 === 'controlBeep' ? 24 : _context.t0 === 'getSensorData' ? 27 : _context.t0 === 'setThreshold' ? 43 : _context.t0 === 'setBrightness' ? 45 : _context.t0 === 'setBeepVolume' ? 49 : _context.t0 === 'setFanSpeed' ? 53 : _context.t0 === 'setColorMode' ? 57 : 61;
                 break;
-              case 19:
+              case 21:
                 (0, _control.onLedSwitch)({
                   detail: {
                     value: args.status
                   }
                 });
                 functionResult = "\u5DF2".concat(args.status ? '打开' : '关闭', "LED\u706F");
-                return _context.abrupt("break", 59);
-              case 22:
+                return _context.abrupt("break", 61);
+              case 24:
                 (0, _control.onBeepSwitch)({
                   detail: {
                     value: args.status
                   }
                 });
                 functionResult = "\u5DF2".concat(args.status ? '打开' : '关闭', "\u62A5\u8B66\u5668");
-                return _context.abrupt("break", 59);
-              case 25:
+                return _context.abrupt("break", 61);
+              case 27:
                 _context.t1 = args.sensor;
-                _context.next = _context.t1 === 'temperature' ? 28 : _context.t1 === 'humidity' ? 30 : _context.t1 === 'light' ? 32 : _context.t1 === 'smoke' ? 34 : _context.t1 === 'weather' ? 36 : _context.t1 === 'all' ? 38 : 40;
+                _context.next = _context.t1 === 'temperature' ? 30 : _context.t1 === 'humidity' ? 32 : _context.t1 === 'light' ? 34 : _context.t1 === 'smoke' ? 36 : _context.t1 === 'weather' ? 38 : _context.t1 === 'all' ? 40 : 42;
                 break;
-              case 28:
-                functionResult = "\u5F53\u524D\u6E29\u5EA6\u662F ".concat(_this5.temp, "\u2103");
-                return _context.abrupt("break", 40);
               case 30:
-                functionResult = "\u5F53\u524D\u6E7F\u5EA6\u662F ".concat(_this5.humi, "%");
-                return _context.abrupt("break", 40);
+                functionResult = "\u5F53\u524D\u6E29\u5EA6\u662F ".concat(_this5.temp, "\u2103");
+                return _context.abrupt("break", 42);
               case 32:
-                functionResult = "\u5F53\u524D\u5149\u7167\u5F3A\u5EA6\u662F ".concat(_this5.lsens, "lx");
-                return _context.abrupt("break", 40);
+                functionResult = "\u5F53\u524D\u6E7F\u5EA6\u662F ".concat(_this5.humi, "%");
+                return _context.abrupt("break", 42);
               case 34:
-                functionResult = "\u5F53\u524D\u70DF\u96FE\u6D53\u5EA6\u662F ".concat(_this5.ppm, "ppm");
-                return _context.abrupt("break", 40);
+                functionResult = "\u5F53\u524D\u5149\u7167\u5F3A\u5EA6\u662F ".concat(_this5.lsens, "lx");
+                return _context.abrupt("break", 42);
               case 36:
-                functionResult = "\u5A01\u6D77\u73B0\u5728\u5929\u6C14".concat(_this5.weather.text, "\uFF0C\u6E29\u5EA6").concat(_this5.weather.temp, "\u2103\uFF0C\u6E7F\u5EA6").concat(_this5.weather.humi, "%\uFF0C\u7A7A\u6C14\u8D28\u91CF").concat(_this5.air.category);
-                return _context.abrupt("break", 40);
+                functionResult = "\u5F53\u524D\u70DF\u96FE\u6D53\u5EA6\u662F ".concat(_this5.ppm, "ppm");
+                return _context.abrupt("break", 42);
               case 38:
-                functionResult = "\u5F53\u524D\u6570\u636E\u5982\u4E0B\uFF1A\n\u6E29\u5EA6\uFF1A".concat(_this5.temp, "\u2103\n\u6E7F\u5EA6\uFF1A").concat(_this5.humi, "%\n\u5149\u7167\uFF1A").concat(_this5.lsens, "lx\n\u70DF\u96FE\uFF1A").concat(_this5.ppm, "ppm\nLED\u706F\uFF1A").concat(_this5.led ? '开启' : '关闭', "\n\u62A5\u8B66\u5668\uFF1A").concat(_this5.beep ? '开启' : '关闭');
-                return _context.abrupt("break", 40);
+                functionResult = "\u5A01\u6D77\u73B0\u5728\u5929\u6C14".concat(_this5.weather.text, "\uFF0C\u6E29\u5EA6").concat(_this5.weather.temp, "\u2103\uFF0C\u6E7F\u5EA6").concat(_this5.weather.humi, "%\uFF0C\u7A7A\u6C14\u8D28\u91CF").concat(_this5.air.category);
+                return _context.abrupt("break", 42);
               case 40:
-                return _context.abrupt("break", 59);
-              case 41:
+                functionResult = "\u5F53\u524D\u6570\u636E\u5982\u4E0B\uFF1A\n\u6E29\u5EA6\uFF1A".concat(_this5.temp, "\u2103\n\u6E7F\u5EA6\uFF1A").concat(_this5.humi, "%\n\u5149\u7167\uFF1A").concat(_this5.lsens, "lx\n\u70DF\u96FE\uFF1A").concat(_this5.ppm, "ppm\nLED\u706F\uFF1A").concat(_this5.led ? '开启' : '关闭', "\n\u62A5\u8B66\u5668\uFF1A").concat(_this5.beep ? '开启' : '关闭');
+                return _context.abrupt("break", 42);
+              case 42:
+                return _context.abrupt("break", 61);
+              case 43:
                 if (args.value >= 0 && args.value <= 100) {
                   (0, _configPage.setThreshold)(args.type, args.value);
                   thresholdTypes = {
@@ -789,51 +792,51 @@ var _default = {
                   // 更新本地数据
                   _this5["".concat(args.type, "_th")] = args.value;
                 }
-                return _context.abrupt("break", 59);
-              case 43:
+                return _context.abrupt("break", 61);
+              case 45:
                 (0, _control.setBrightness)(args.level);
                 brightnessLevels = ['暗', '较暗', '较亮', '亮'];
                 functionResult = "\u5DF2\u5C06LED\u4EAE\u5EA6\u8BBE\u7F6E\u4E3A".concat(brightnessLevels[args.level]);
-                return _context.abrupt("break", 59);
-              case 47:
+                return _context.abrupt("break", 61);
+              case 49:
                 (0, _control.setBeepVolume)(args.level);
                 volumeLevels = ['小', '较小', '中', '大'];
                 functionResult = "\u5DF2\u5C06\u62A5\u8B66\u5668\u97F3\u91CF\u8BBE\u7F6E\u4E3A".concat(volumeLevels[args.level]);
-                return _context.abrupt("break", 59);
-              case 51:
+                return _context.abrupt("break", 61);
+              case 53:
                 (0, _control.setFanSpeed)(args.level);
                 speedLevels = ['关闭', '慢速', '中速', '快速'];
                 functionResult = "\u5DF2\u5C06\u98CE\u6247\u901F\u5EA6\u8BBE\u7F6E\u4E3A".concat(speedLevels[args.level]);
-                return _context.abrupt("break", 59);
-              case 55:
+                return _context.abrupt("break", 61);
+              case 57:
                 (0, _control.setColorMode)(args.mode);
                 colorModes = ['关闭', '模式一', '模式二', '模式三'];
                 functionResult = "\u5DF2\u5C06\u5F69\u706F\u8BBE\u7F6E\u4E3A".concat(colorModes[args.mode]);
-                return _context.abrupt("break", 59);
-              case 59:
+                return _context.abrupt("break", 61);
+              case 61:
                 if (functionResult) {
                   _this5.messages.push({
                     type: 'ai',
                     content: functionResult
                   });
                 }
-              case 60:
-                _context.next = 66;
-                break;
               case 62:
-                _context.prev = 62;
-                _context.t2 = _context["catch"](5);
+                _context.next = 68;
+                break;
+              case 64:
+                _context.prev = 64;
+                _context.t2 = _context["catch"](6);
                 console.error('Error:', _context.t2);
                 _this5.messages.push({
                   type: 'ai',
                   content: '抱歉，我遇到了一些问题，请稍后再试。'
                 });
-              case 66:
+              case 68:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[5, 62]]);
+        }, _callee, null, [[6, 64]]);
       }))();
     },
     // 修改语音识别相关方法

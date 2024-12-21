@@ -118,10 +118,10 @@ void TIM2_IRQHandler(void)
         }
 
         TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-        //UsartPrintf(USART_DEBUG, "gradient_update........ \r\n", gramode);
+  
     }
      LED2 = 1;
-    //UsartPrintf(USART_DEBUG, "gradient_mode: %d \r\n", gramode);
+
 }
 
 

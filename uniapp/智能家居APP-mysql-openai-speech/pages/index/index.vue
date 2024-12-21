@@ -208,7 +208,7 @@
 			}, 6000);
 			setInterval(() => {
 				this.showPopup();
-			}, 5000);
+			}, 6000);
 		},
 		onNavigationBarButtonTap: function(e) {
 			uni.reLaunch({
@@ -358,7 +358,7 @@
 						method: 'GET',
 						success: (res) => {
 							if (res.data.code === "200") {
-								this.warning = res.data.warning[0] || '无'; // 存储天气数据
+								this.warning = res.data.warning[0].title || '无'; // 存储天气数据
 								resolve();
 							} else {
 								console.error("Error fetching warning data: ", res.data);
@@ -409,6 +409,8 @@
 					type: 'user',
 					content: this.userInput
 				});
+				
+				console.log("AI对话:"+this.userInput)
 
 				const userQuery = this.userInput;
 				this.userInput = '';
@@ -555,6 +557,7 @@
 						},
 						header: {
 							'Authorization': 'Bearer sk-CBbXYAj2A480YQerqALXWgaecu4cCyPSaMrLBATZHH1QJxYM',
+							'Accept':'application/json',
 							'Content-Type': 'application/json'
 						}
 					});
@@ -569,6 +572,8 @@
 								content: result.content
 							});
 						}
+						
+						console.log("AI回复:"+result.content)
 
 						// 处理函数调用
 						if (result.function_call) {

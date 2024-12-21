@@ -7,7 +7,7 @@
 					 psc:分频系数
 * 输    出         : 无
 *******************************************************************************/
-void TIM3_CH2_PWM_Init(u16 per,u16 psc)
+void TIM3_CH2_PWM_Init(u16 per,u16 psc) //灯亮度
 {
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
 	TIM_OCInitTypeDef TIM_OCInitStructure;
@@ -33,7 +33,7 @@ void TIM3_CH2_PWM_Init(u16 per,u16 psc)
 	TIM_TimeBaseInit(TIM3,&TIM_TimeBaseInitStructure);	
 	
 	TIM_OCInitStructure.TIM_OCMode=TIM_OCMode_PWM1;
-	TIM_OCInitStructure.TIM_OCPolarity=TIM_OCPolarity_Low;
+	TIM_OCInitStructure.TIM_OCPolarity=TIM_OCPolarity_Low;//低
 	TIM_OCInitStructure.TIM_OutputState=TIM_OutputState_Enable;
 	TIM_OC2Init(TIM3,&TIM_OCInitStructure); //输出比较通道2初始化
 	
@@ -45,7 +45,7 @@ void TIM3_CH2_PWM_Init(u16 per,u16 psc)
 }
 
 
-void TIM4_CH3_PWM_Init(u16 per, u16 psc)
+void TIM4_CH3_PWM_Init(u16 per, u16 psc)  //蜂鸣器
 {
     TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
     TIM_OCInitTypeDef TIM_OCInitStructure;
@@ -68,7 +68,7 @@ void TIM4_CH3_PWM_Init(u16 per, u16 psc)
     TIM_TimeBaseInit(TIM4, &TIM_TimeBaseInitStructure);    
     
     TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
-    TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+    TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;//高
     TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
     TIM_OC3Init(TIM4, &TIM_OCInitStructure); // 输出比较通道3初始化
     
